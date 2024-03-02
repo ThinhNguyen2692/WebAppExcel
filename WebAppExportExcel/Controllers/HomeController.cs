@@ -120,8 +120,7 @@ namespace WebAppExportExcel.Controllers
                             DateTime dt;
                             name = name.NonUnicode();
                             var obj = listticktay.Where(x => x.Name == name).Where(x => x.Date == date.ToString("dd/MM/yyyy")).ToList();
-                            if (obj.Count == 4)
-                            {
+                           
                                 int i = 4;
                                 foreach (var item in obj)
                                 {
@@ -140,32 +139,8 @@ namespace WebAppExportExcel.Controllers
                                 else ws.Cells[row, 11].Value = string.Empty;
 
 
-                            }
-                            else if (obj.Count == 3)
-                            {
-                                int i = 5;
-                                var itemNull = obj.Where(x => x.NewState != "OverTime Out" && x.NewState != "OverTime In").FirstOrDefault();
-                                var index = obj.IndexOf(itemNull);
-                                if (index == 0)
-                                {
-                                    ws.Cells[row, i + 2].Value = obj[1].Time.ToString();
-                                    ws.Cells[row, i + 3].Value = obj[2].Time.ToString();
-                                }
-                                else
-                                {
-                                    ws.Cells[row, i].Value = obj[0].Time.ToString();
-                                    ws.Cells[row, i + 1].Value = obj[1].Time.ToString();
-                                    var dateTimeChuan = DateTime.ParseExact(obj[1].Date + " 7:00 AM", "dd/MM/yyyy h:mm tt", CultureInfo.InvariantCulture);
-                                    var dateTime = DateTime.ParseExact(obj[0].dateTime, "dd/MM/yyyy h:mm tt", CultureInfo.InvariantCulture);
-                                    var time = dateTimeChuan - dateTime;
-                                    var min = time.TotalMinutes;
-                                    if (min < 0)
-                                    {
-                                        min = min * -1;
-                                        ws.Cells[row, 11].Value = min;
-                                    }
-                                }
-                            }
+                            
+                            
                         }
                     }
                     excelPack.Save();
