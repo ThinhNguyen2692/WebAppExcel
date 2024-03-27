@@ -125,9 +125,27 @@ namespace WebAppExportExcel.Controllers
                                 foreach (var item in obj)
                                 {
                                     i++;
-                                    ws.Cells[row, i].Value = item.Time.ToString();
-                                }
-                                var dateTimeChuan = DateTime.ParseExact(obj[1].Date + " 7:00 AM", "dd/MM/yyyy h:mm tt", CultureInfo.InvariantCulture);
+                                    var itemDatetime = DateTime.ParseExact(item.dateTime, "dd/MM/yyyy h:mm tt", CultureInfo.InvariantCulture);
+                                    if(itemDatetime.Hour <= 9)
+                                    {
+                                        ws.Cells[row, 5].Value = item.Time.ToString();
+                                    } else if (itemDatetime.Hour < 12)
+                                    {
+                                        ws.Cells[row, 6].Value = item.Time.ToString();
+                                    }
+                                    else if (itemDatetime.Hour < 15)
+                                    {
+                                        ws.Cells[row, 7].Value = item.Time.ToString();
+                                    }
+                                    else 
+                                    {
+                                        ws.Cells[row, 8].Value = item.Time.ToString();
+                                    }
+
+                            }
+                            if (obj.Count() > 0)
+                            {
+                                var dateTimeChuan = DateTime.ParseExact(obj[0].Date + " 7:00 AM", "dd/MM/yyyy h:mm tt", CultureInfo.InvariantCulture);
                                 var dateTime = DateTime.ParseExact(obj[0].dateTime, "dd/MM/yyyy h:mm tt", CultureInfo.InvariantCulture);
                                 var time = dateTimeChuan - dateTime;
                                 var min = time.TotalMinutes;
@@ -137,10 +155,26 @@ namespace WebAppExportExcel.Controllers
                                     ws.Cells[row, 11].Value = min;
                                 }
                                 else ws.Cells[row, 11].Value = string.Empty;
+                            }
+
+                            switch (obj.Count())
+                            {
+                                case 0:
+                                    ws.Cells[row, 10].Value = "1";
+                                    break;
+                                case 1:
+                                    case 2:
+                                    ws.Cells[row, 10].Value = "0.5";
+                                   break;
+                                    case 3:
+                                        case 4:
+                                    ws.Cells[row, 10].Value = "0";
+                                    break;
+                                default:
+                                    break;
+                            }
 
 
-                            
-                            
                         }
                     }
                     excelPack.Save();
