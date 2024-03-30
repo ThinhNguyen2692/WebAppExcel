@@ -122,26 +122,10 @@ namespace WebAppExportExcel.Controllers
                             var obj = listticktay.Where(x => x.Name == name).Where(x => x.Date == date.ToString("dd/MM/yyyy")).ToList();
                            
                                 int i = 4;
-                                foreach (var item in obj)
-                                {
-                                    i++;
-                                    var itemDatetime = DateTime.ParseExact(item.dateTime, "dd/MM/yyyy h:mm tt", CultureInfo.InvariantCulture);
-                                    if(itemDatetime.Hour <= 9)
-                                    {
-                                        ws.Cells[row, 5].Value = item.Time.ToString();
-                                    } else if (itemDatetime.Hour < 12)
-                                    {
-                                        ws.Cells[row, 6].Value = item.Time.ToString();
-                                    }
-                                    else if (itemDatetime.Hour < 15)
-                                    {
-                                        ws.Cells[row, 7].Value = item.Time.ToString();
-                                    }
-                                    else 
-                                    {
-                                        ws.Cells[row, 8].Value = item.Time.ToString();
-                                    }
-
+                            foreach (var item in obj)
+                            {
+                                i++;
+                                ws.Cells[row, i].Value = item.Time.ToString();
                             }
                             if (obj.Count() > 0)
                             {
@@ -160,15 +144,15 @@ namespace WebAppExportExcel.Controllers
                             switch (obj.Count())
                             {
                                 case 0:
-                                    ws.Cells[row, 10].Value = "1";
+                                    ws.Cells[row, 10].Value = 1;
                                     break;
                                 case 1:
                                     case 2:
-                                    ws.Cells[row, 10].Value = "0.5";
+                                    ws.Cells[row, 10].Value = 0.5;
                                    break;
                                     case 3:
                                         case 4:
-                                    ws.Cells[row, 10].Value = "0";
+                                    ws.Cells[row, 10].Value = 0;
                                     break;
                                 default:
                                     break;
